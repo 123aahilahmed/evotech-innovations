@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page</title>
+    <style>
+        /* Global styles */
+        body {
+            background-image: url('Smart_Cities.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        input[type="number"],
+        button {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+            display: none; /* hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* higher z-index to ensure it's on top */
+        }
+
+        .loading {
+            color: white;
+            font-size: 24px;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Order TerraVisor AI Max</h2>
+        <form id="order-form">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="address">Shipping Address:</label>
+            <textarea id="address" name="address" required></textarea>
+
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1" max="5" required>
+
+            <label for="total">Total Amount:</label>
+            <input type="text" id="total" name="total" readonly>
+
+            <button type="submit">Place Order</button>
+            <div id="overlay" class="overlay">
+                <div class="loading">Processing Payment...</div>
+                <div class="loader"></div> <!-- Loading spinner -->
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const orderForm = document.getElementById('order-form');
+        const overlay = document.getElementById('overlay');
+        const loader = document.querySelector('.loader');
+        const quantityInput = document.getElementById('quantity');
+        const totalInput = document.getElementById('total');
+
+        orderForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Show overlay with loading spinner
+            overlay.style.display = 'flex';
+
+            // Simulate payment process (replace with actual payment logic)
+            setTimeout(function() {
+                // Store form data in sessionStorage
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    quantity: quantityInput.value
+                };
+                sessionStorage.setItem('orderDetails', JSON.stringify(formData));
+
+                // Redirect to order confirmation page after payment (simulated)
+                window.location.href = "order-confirm.html";
+            }, 2000); // Simulate payment delay for 2 seconds
+        });
+
+        // Update total amount based on quantity selected
+        quantityInput.addEventListener('change', function() {
+            const quantity = parseInt(quantityInput.value);
+            let totalAmount = 0;
+
+            switch (quantity) {
+                case 2:
+                    totalAmount = 600000; // Rs. 6,00,000
+                    break;
+                case 3:
+                    totalAmount = 900000; // Rs. 9,00,000
+                    break;
+                case 4:
+                    totalAmount = 1200000; // Rs. 12,00,000
+                    break;
+                case 5:
+                    totalAmount = 1500000; // Rs. 15,00,000
+                    break;
+                default:
+                    totalAmount = 300000; // Default price for Quantity 1 (Rs. 3,00,000)
+                    break;
+            }
+
+            totalInput.value = `Rs. ${totalAmount.toLocaleString()}`;
+        });
+
+        // Initialize total amount on page load
+        quantityInput.dispatchEvent(new Event('change'));
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <style>
+        /* Global styles */
+        body {
+            background-image: url('Smart_Cities.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .order-details {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+
+        .order-details label {
+            font-weight: bold;
+        }
+
+        .order-details p {
+            margin-bottom: 8px;
+        }
+
+        .thank-you {
+            text-align: center;
+            margin-top: 30px;
+            color: #4CAF50;
+            font-size: 24px;
+        }
+
+        .back-to-home {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .back-to-home:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Order Confirmation</h2>
+        <div class="thank-you">Thank you for your order!</div>
+        
+        <div class="order-details">
+            <!-- Display order details fetched from sessionStorage -->
+            <p><label>Name:</label> <span id="customer-name"></span></p>
+            <p><label>Email:</label> <span id="customer-email"></span></p>
+            <p><label>Shipping Address:</label> <span id="customer-address"></span></p>
+            <p><label>Quantity:</label> <span id="order-quantity"></span></p>
+            <p><label>Total Amount:</label> <span id="order-total"></span></p>
+            <p><label>Includes:</label> Headset, Stand, Charger</p>
+        </div>
+
+        <a href="index.html" class="back-to-home">Back to Home</a>
+    </div>
+
+    <script>
+        // Retrieve order details from sessionStorage
+        const orderDetails = JSON.parse(sessionStorage.getItem('orderDetails'));
+
+        if (orderDetails) {
+            // Display order details in the order confirmation page
+            document.getElementById('customer-name').textContent = orderDetails.name;
+            document.getElementById('customer-email').textContent = orderDetails.email;
+            document.getElementById('customer-address').textContent = orderDetails.address;
+            document.getElementById('order-quantity').textContent = orderDetails.quantity;
+
+            // Calculate total amount based on quantity
+            let totalAmount = 0;
+            const quantity = parseInt(orderDetails.quantity);
+
+            switch (quantity) {
+                case 2:
+                    totalAmount = 600000; // Rs. 6,00,000
+                    break;
+                case 3:
+                    totalAmount = 900000; // Rs. 9,00,000
+                    break;
+                case 4:
+                    totalAmount = 1200000; // Rs. 12,00,000
+                    break;
+                case 5:
+                    totalAmount = 1500000; // Rs. 15,00,000
+                    break;
+                default:
+                    totalAmount = 300000; // Default price for Quantity 1 (Rs. 3,00,000)
+                    break;
+            }
+
+            // Display total amount in Indian Rupees format
+            document.getElementById('order-total').textContent = `Rs. ${totalAmount.toLocaleString()}`;
+        } else {
+            // Handle case where order details are not found (optional)
+            console.error('Order details not found.');
+        }
+    </script>
+</body>
+</html>
